@@ -1,0 +1,63 @@
+$color-white: #ffffff;
+$color-light-gray: #f8f9fa;
+$color-gray-border: #e0e0e0;
+$color-darkest-blue: #0b2835;
+$color-medium-dark-blue: #143f5d;
+$color-accent-blue: #4196d6;
+$color-primary-green: #5fa700;
+$color-error-text: #dc3545;
+
+$color-text-primary: #212529;
+$color-text-secondary: #6c757d;
+$color-text-link: $color-accent-blue;
+
+$color-background-page: #ffffff;
+$app-content-bg: #ffffff;
+$color-card-bg: $color-white;
+
+$color-sidebar-text: #e0e0e0;
+$color-sidebar-text-hover: $color-white;
+$color-sidebar-active-bg: lighten($color-medium-dark-blue, 5%);
+$color-sidebar-icon: #a0a0a0;
+
+$color-search-icon: #757575;
+$color-search-placeholder: #9e9e9e;
+$color-input-focus-border: $color-accent-blue;
+$color-input-focus-shadow: rgba($color-accent-blue, 0.25);
+$new-search-input-bg: #f0f2f5;
+
+$color-sort-arrow-active: $color-darkest-blue;
+$color-sort-arrow-inactive: lighten($color-text-secondary, 20%);
+
+$color-dropdown-bg: $color-white;
+$color-dropdown-shadow: rgba(0, 0, 0, 0.1);
+$color-dropdown-border: $color-gray-border;
+$color-dropdown-item-text: $color-text-primary;
+$color-dropdown-item-hover-bg: lighten($color-accent-blue, 42%);
+$color-dropdown-item-hover-text: darken($color-accent-blue, 5%);
+$color-dropdown-item-active-bg: lighten($color-accent-blue, 38%);
+$color-dropdown-item-active-text: $color-accent-blue;
+
+$color-tab-active-bg: lighten($color-accent-blue, 35%);
+$color-tab-hover-bg: lighten($color-accent-blue, 40%);
+
+$color-status-active-bg: lighten($color-primary-green, 40%);
+$color-status-active-text: darken($color-primary-green, 10%);
+$color-status-inactive-bg: #ffe0e0;
+$color-status-inactive-text: #c0392b;
+
+$glass-bg: rgba(255, 255, 255, 0.25);
+$glass-blur: 10px;
+$glass-border-color: rgba(255, 255, 255, 0.3);
+$glass-shadow: 0 8px 24px 0 rgba(31, 38, 135, 0.12);
+
+$desktop-content-header-bg: #ffffff;
+$desktop-content-header-border: #e0e0e0;
+
+$new-top-bar-bg: #ffffff;
+$new-top-bar-text-color: #333;
+$new-top-bar-border-color: #e0e0e0;
+
+$sidebar-width-collapsed: 100px;
+$sidebar-width-expanded: 270px;
+$sidebar-width-mobile-icon-only: 70px;

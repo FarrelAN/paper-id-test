@@ -1,0 +1,222 @@
+<div class="user-list-page">
+  <div class="page-header">
+    <h2>User List</h2>
+  </div>
+
+  <div class="controls-bar">
+    <div class="search-control modern-search">
+      <mat-icon class="search-icon-prefix">search</mat-icon>
+      <input
+        type="text"
+        class="modern-search-input"
+        placeholder="Search users..."
+        [(ngModel)]="searchTerm"
+        (input)="applySearchFilter()"
+      />
+    </div>
+
+    <div class="filter-controls">
+      <div class="status-filter-dropdown-container">
+        <button
+          class="filter-button dropdown-toggle-button"
+          (click)="toggleStatusDropdown($event)"
+        >
+          <mat-icon class="filter-icon">filter_list</mat-icon>
+          <span>{{ getSelectedStatusLabel() }}</span>
+          <mat-icon class="dropdown-arrow-icon">{{
+            isStatusDropdownOpen ? "arrow_drop_up" : "arrow_drop_down"
+          }}</mat-icon>
+        </button>
+        <div
+          class="dropdown-menu-custom"
+          [class.open]="isStatusDropdownOpen"
+          *ngIf="isStatusDropdownOpen"
+        >
+          <ul>
+            <li
+              *ngFor="let statusOption of statusFilterOptions"
+              (click)="selectStatus(statusOption.value)"
+              [class.active-option]="statusOption.value === selectedStatus"
+            >
+              {{ statusOption.label }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-content-area">
+    <div *ngIf="isLoading" class="loading-indicator">
+      <p>Loading users...</p>
+    </div>
+
+    <div *ngIf="error && !isLoading" class="error-message">
+      <p>{{ error }}</p>
+      <button (click)="fetchUsers()">Try Again</button>
+    </div>
+
+    <div
+      *ngIf="!isLoading && !error && users.length > 0"
+      class="users-table-container"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th (click)="requestSort('name')" class="sortable-header">
+              Name
+              <span class="sort-arrows-container">
+                <mat-icon
+                  class="sort-arrow"
+                  [class.active]="
+                    currentSortKey === 'name' && currentSortDirection === 'asc'
+                  "
+                  >arrow_drop_up</mat-icon
+                >
+                <mat-icon
+                  class="sort-arrow"
+                  [class.active]="
+                    currentSortKey === 'name' && currentSortDirection === 'desc'
+                  "
+                  >arrow_drop_down</mat-icon
+                >
+              </span>
+            </th>
+            <th (click)="requestSort('email')" class="sortable-header">
+              Email
+              <span class="sort-arrows-container">
+                <mat-icon
+                  class="sort-arrow"
+                  [class.active]="
+                    currentSortKey === 'email' && currentSortDirection === 'asc'
+                  "
+                  >arrow_drop_up</mat-icon
+                >
+                <mat-icon
+                  class="sort-arrow"
+                  [class.active]="
+                    currentSortKey === 'email' &&
+                    currentSortDirection === 'desc'
+                  "
+                  >arrow_drop_down</mat-icon
+                >
+              </span>
+            </th>
+            <th (click)="requestSort('website')" class="sortable-header">
+              Website
+              <span class="sort-arrows-container">
+                <mat-icon
+                  class="sort-arrow"
+                  [class.active]="
+                    currentSortKey === 'website' &&
+                    currentSortDirection === 'asc'
+                  "
+                  >arrow_drop_up</mat-icon
+                >
+                <mat-icon
+                  class="sort-arrow"
+                  [class.active]="
+                    currentSortKey === 'website' &&
+                    currentSortDirection === 'desc'
+                  "
+                  >arrow_drop_down</mat-icon
+                >
+              </span>
+            </th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let user of users"
+            (click)="navigateToUser(user.id)"
+            class="clickable-row"
+            (mouseenter)="onRowMouseEnter($event, user)"
+            (mousemove)="onRowMouseMove($event)"
+            (mouseleave)="onRowMouseLeave()"
+          >
+            <td>
+              <img
+                [src]="'https://i.pravatar.cc/40?u=' + user.id"
+                alt="User Avatar"
+                class="user-avatar"
+              />
+            </td>
+            <td data-label="Name">{{ user.name }}</td>
+            <td data-label="Email">{{ user.email }}</td>
+            <td data-label="Website">
+              <a
+                [href]="'http://' + user.website"
+                target="_blank"
+                rel="noopener noreferrer"
+                (click)="$event.stopPropagation()"
+                >{{ user.website }}</a
+              >
+            </td>
+            <td data-label="Status">
+              <span
+                class="status-pill"
+                [ngClass]="
+                  user.id % 2 === 0 ? 'status-active' : 'status-inactive'
+                "
+              >
+                {{ user.id % 2 === 0 ? "Active" : "Inactive" }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      *ngIf="!isLoading && !error && users.length === 0"
+      class="no-users-found"
+    >
+      <p>No users found.</p>
+    </div>
+  </div>
+  <div
+    *ngIf="userForCardDisplay"
+    class="user-hover-card"
+    [ngStyle]="hoverCardStyle"
+    (mouseenter)="onCardMouseEnter()"
+    (mouseleave)="onCardMouseLeave()"
+  >
+    <div class="hover-card-header">
+      <img
+        [src]="'https://i.pravatar.cc/60?u=' + userForCardDisplay!.id"
+        alt="Avatar"
+        class="hover-card-avatar"
+      />
+      <div class="hover-card-user-info">
+        <h4 class="hover-card-name">{{ userForCardDisplay!.name }}</h4>
+        <p class="hover-card-username">
+          {{ "@" + userForCardDisplay!.username }}
+        </p>
+      </div>
+    </div>
+    <div class="hover-card-body">
+      <p><mat-icon>email</mat-icon> {{ userForCardDisplay!.email }}</p>
+      <p><mat-icon>phone</mat-icon> {{ userForCardDisplay!.phone }}</p>
+      <p>
+        <mat-icon>language</mat-icon>
+        <a
+          [href]="'http://' + userForCardDisplay!.website"
+          target="_blank"
+          rel="noopener noreferrer"
+          (click)="$event.stopPropagation()"
+          >{{ userForCardDisplay!.website }}</a
+        >
+      </p>
+      <p *ngIf="userForCardDisplay!.company">
+        <mat-icon>business</mat-icon> {{ userForCardDisplay!.company.name }}
+      </p>
+      <p *ngIf="userForCardDisplay!.address">
+        <mat-icon>location_city</mat-icon>
+        {{ userForCardDisplay!.address.city }},
+        {{ userForCardDisplay!.address.street }}
+      </p>
+    </div>
+  </div>
+</div>

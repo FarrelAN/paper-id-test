@@ -1,0 +1,187 @@
+<div class="user-details-page-revamped">
+  <div class="page-header-actions">
+    <a routerLink="/users" class="back-link-revamped">
+      <mat-icon>arrow_back_ios</mat-icon>
+      <span>Users</span>
+    </a>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    <p>Loading user details...</p>
+  </div>
+
+  <div *ngIf="error && !isLoading" class="error-message">
+    <p><mat-icon>error_outline</mat-icon> {{ error }}</p>
+  </div>
+
+  <div *ngIf="user && !isLoading && !error" class="details-layout-revamped">
+    <aside class="profile-sidebar-card">
+      <div class="profile-summary">
+        <img
+          [src]="'https://i.pravatar.cc/120?u=' + user.id"
+          alt="{{ user.name }}'s avatar"
+          class="profile-avatar-large"
+        />
+        <h2 class="profile-name">{{ user.name }}</h2>
+        <p class="profile-username">{{ user.username }}</p>
+        <p class="profile-company-name-small" *ngIf="user.company">
+          {{ user.company.name }}
+        </p>
+      </div>
+      <div class="profile-contact-quick-links">
+        <a [href]="'mailto:' + user.email" class="quick-link">
+          <mat-icon>email</mat-icon> <span>{{ user.email }}</span>
+        </a>
+        <a [href]="'tel:' + user.phone" class="quick-link">
+          <mat-icon>phone</mat-icon> <span>{{ user.phone }}</span>
+        </a>
+        <a
+          [href]="'http://' + user.website"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="quick-link"
+        >
+          <mat-icon>language</mat-icon> <span>{{ user.website }}</span>
+        </a>
+      </div>
+    </aside>
+
+    <section class="details-content-card">
+      <nav class="details-tabs">
+        <button
+          class="tab-button"
+          [class.active]="activeTab === 'about'"
+          (click)="setActiveTab('about')"
+        >
+          <mat-icon>person_pin</mat-icon> About
+        </button>
+        <button
+          class="tab-button"
+          [class.active]="activeTab === 'address'"
+          (click)="setActiveTab('address')"
+        >
+          <mat-icon>location_on</mat-icon> Address
+        </button>
+      </nav>
+
+      <div class="tab-content">
+        <div *ngIf="activeTab === 'about'" class="tab-pane active">
+          <div class="info-group">
+            <h4 class="info-group-title">Contact Details</h4>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">Full Name</span>
+              <span class="info-value-detailed">{{ user.name }}</span>
+            </div>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">Username</span>
+              <span class="info-value-detailed">{{ user.username }}</span>
+            </div>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">Email Address</span>
+              <a
+                [href]="'mailto:' + user.email"
+                class="info-value-detailed link"
+                >{{ user.email }}</a
+              >
+            </div>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">Phone Number</span>
+              <a
+                [href]="'tel:' + user.phone"
+                class="info-value-detailed link"
+                >{{ user.phone }}</a
+              >
+            </div>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">Website</span>
+              <a
+                [href]="'http://' + user.website"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="info-value-detailed link"
+                >{{ user.website }}</a
+              >
+            </div>
+          </div>
+
+          <div class="info-group" *ngIf="user.company">
+            <h4 class="info-group-title">Company Information</h4>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">Company Name</span>
+              <span class="info-value-detailed">{{ user.company.name }}</span>
+            </div>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">Catchphrase</span>
+              <span class="info-value-detailed italic"
+                >"{{ user.company.catchPhrase | titlecase }}"</span
+              >
+            </div>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">Business Services (BS)</span>
+              <span class="info-value-detailed">{{
+                user.company.bs | titlecase
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="activeTab === 'address' && user.address"
+          class="tab-pane active"
+        >
+          <div class="info-group">
+            <h4 class="info-group-title">Location & Address</h4>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">Street</span>
+              <span class="info-value-detailed">{{ user.address.street }}</span>
+            </div>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">Suite</span>
+              <span class="info-value-detailed">{{ user.address.suite }}</span>
+            </div>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">City</span>
+              <span class="info-value-detailed">{{ user.address.city }}</span>
+            </div>
+            <div class="info-item-detailed">
+              <span class="info-label-detailed">Zipcode</span>
+              <span class="info-value-detailed">{{
+                user.address.zipcode
+              }}</span>
+            </div>
+            <div
+              class="info-item-detailed"
+              *ngIf="
+                user.address.geo && user.address.geo.lat && user.address.geo.lng
+              "
+            >
+              <span class="info-label-detailed">Coordinates</span>
+              <span class="info-value-detailed">
+                Lat: {{ user.address.geo.lat }}, Lng: {{ user.address.geo.lng }}
+              </span>
+            </div>
+          </div>
+          <div
+            class="embedded-map-container"
+            *ngIf="
+              user.address.geo && user.address.geo.lat && user.address.geo.lng
+            "
+          >
+            <iframe
+              width="100%"
+              height="300"
+              style="border: 0"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              [src]="
+                getMapUrl(user.address.geo.lat, user.address.geo.lng) | safeUrl
+              "
+            >
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="sidebar-mobile-top-bar" *ngIf="isMobile">
+  <button class="sidebar-mobile-nav-toggle" (click)="toggleMobileMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <div class="sidebar-mobile-top-bar-center">
+    <img
+      src="assets/logo-hq.png"
+      alt="Paper.id Logo"
+      class="sidebar-mobile-top-bar-logo"
+    />
+    <span class="sidebar-mobile-top-bar-title">P A P E R</span>
+  </div>
+  <div class="sidebar-mobile-top-bar-right-placeholder"></div>
+</div>
+
+<aside
+  class="app-sidebar-internal-wrapper"
+  (mouseenter)="expandSidebar()"
+  (mouseleave)="collapseSidebar()"
+>
+  <button
+    *ngIf="isMobile"
+    class="mobile-panel-close-button"
+    (click)="toggleMobileMenu()"
+    aria-label="Close navigation panel"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <div class="sidebar-header">
+    <img src="assets/logo-hq.png" alt="Paper.id Logo" class="sidebar-logo" />
+    <h2 class="sidebar-title">P A P E R</h2>
+  </div>
+
+  <div class="sidebar-admin-profile">
+    <img
+      src="https://iili.io/3DLMDkG.md.png"
+      alt="Admin Avatar"
+      class="admin-avatar"
+    />
+    <div class="admin-info">
+      <span class="admin-name">Farrel A. N.</span>
+      <span class="admin-role">Frontend Developer</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul>
+      <li *ngFor="let item of navItems">
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{
+            exact: item.exactMatch !== undefined ? item.exactMatch : false,
+          }"
+          (click)="isMobile && toggleMobileMenu()"
+        >
+          <mat-icon *ngIf="item.icon" class="nav-icon">{{
+            item.icon
+          }}</mat-icon>
+          <span class="nav-text">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a
+      href="https://farrelan.vercel.app"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="contact-button"
+    >
+      <span class="button-text"
+        >Farrel A. N. - 2025. <br />
+        All rights reserved.</span
+      >
+    </a>
+  </div>
+</aside>
